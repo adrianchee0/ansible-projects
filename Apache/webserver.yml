@@ -1,0 +1,15 @@
+---
+- name: Setup Webservers
+ hosts: webservers
+ become: yes
+
+ tasks:
+  - name: Install Apache2
+   apt:
+    name: apache2
+    state: present
+
+  - name: Reload Apache service
+    service:
+      name: apache2
+      state: reloaded
