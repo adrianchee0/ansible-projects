@@ -1,0 +1,33 @@
+---
+- name: PostgreSQL
+  hosts: all
+  become: true
+  tasks:
+    - name: Install PostgreSQL
+      apt:
+        name: postgresql
+        state: present
+
+    - name: Install ACL
+      apt:
+        pkg: acl
+
+    - name: Create user
+      postgresql_user:
+        name: admin
+        password: password
+      become_user: postgres
+
+    - name: Create database
+      postgresql_db:
+        name: my_db
+        owner: admin
+      become: true
+      become_user: postgres
+
+    - name: Start service
+      become: true
+      service:
+        name: postgresql
+        state: started
+        enabled: yes
